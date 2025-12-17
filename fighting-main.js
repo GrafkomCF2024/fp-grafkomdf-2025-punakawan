@@ -1405,14 +1405,14 @@ function showClickTooltip(text = 'Memuat...', ms = 1100) {
       let mapIndex = 1; // Default: latar.jpg
       
       // Map landmark to map file:
-      // candiCetho -> latar.jpg (1)
+      // candiSambisari -> latar5.png (5)
       // borobudur -> latar2.png (2)
       // gerbangTrowulan -> latar3.png (3)
       // prambanan -> latar4.png (4)
-      // candiParit -> latar5.png (5)
+      // candiCangkuang -> latar.jpg (1)
       switch(landmarkKey) {
-        case 'candiCetho':
-          mapIndex = 1; // latar.jpg
+        case 'candiSambisari':
+          mapIndex = 5; // latar5.png -> loadsambisari.png
           break;
         case 'borobudur':
           mapIndex = 2; // latar2.png
@@ -1423,8 +1423,8 @@ function showClickTooltip(text = 'Memuat...', ms = 1100) {
         case 'prambanan':
           mapIndex = 4; // latar4.png
           break;
-        case 'candiParit':
-          mapIndex = 5; // latar5.png
+        case 'candiCangkuang':
+          mapIndex = 1; // latar.jpg -> loadcangkuang.png
           break;
         default:
           mapIndex = 1;
