@@ -88,14 +88,14 @@ const landmarks = {
     name: 'Gerbang Trowulan',
     color: 0x708090
   },
-  candiCetho: {
+  candiSambisari: {
     position: { x: 300, y: 0, z: 0 },
-    name: 'Candi Cetho',
+    name: 'Candi Sambisari',
     color: 0x8B8B7A
   },
-  candiParit: {
+  candiCangkuang: {
     position: { x: -300, y: 0, z: 0 },
-    name: 'Candi Parit',
+    name: 'Candi Cangkuang',
     color: 0xA0826D
   },
   prambanan: {
@@ -289,16 +289,16 @@ Konon Danau Batur dan Danau Bratan (di Bedugul) dulunya satu. Ketika Dewa Wisnu 
     description: `Candi Parit atau Candi Apit adalah salah satu candi yang merupakan bagian dari kompleks percandian di Jawa Tengah.
 
 SEJARAH:
-Candi ini dibangun pada masa kejayaan kerajaan Hindu-Buddha di Jawa. Nama "Parit" atau "Apit" mengacu pada posisinya yang mengapit atau berada di samping struktur utama kompleks candi.
+Candi ini dibangun pada abad ke-8 Masehi dan terletak di Kampung Pulo, Garut. Candi Cangkuang merupakan peninggalan Kerajaan Galuh yang bercorak Hindu Shivaisme.
 
 ARSITEKTUR:
-Candi Parit menampilkan arsitektur khas periode klasik Jawa dengan:
+Candi Cangkuang menampilkan arsitektur khas periode klasik Sunda dengan:
 • Struktur batu andesit yang kokoh
 • Ornamen relief yang mendetail
 • Proporsi harmonis khas percandian Jawa
 
 FUNGSI:
-Sebagai candi perwara (candi pendamping), Candi Parit berfungsi sebagai pelengkap candi utama dalam kompleks percandian. Candi-candi perwara biasanya digunakan untuk menyimpan arca atau sebagai tempat pemujaan tambahan.
+Candi Cangkuang memiliki keunikan karena terletak di sebuah pulau kecil di tengah danau. Candi ini berfungsi sebagai tempat pemujaan Dewa Siwa. Di dalamnya ditemukan arca Siwa dan arca Ganesha sebagai bukti pengaruh Hindu di Tatar Sunda.
 
 PELESTARIAN:
 Candi ini telah mengalami beberapa kali pemugaran untuk menjaga kelestariannya sebagai warisan budaya Indonesia.`
@@ -403,11 +403,11 @@ function reduceModelResolution(gltf, opts = {}) {
 
 // Per-model downscale configuration. Set `enabled` to false to skip downscaling for a model.
 const MODEL_DOWNSCALE_CONFIG = {
-  candicetho: { enabled: true, maxSize: 2056 },
+  candisambisari: { enabled: true, maxSize: 2056 },
   prambanan: { enabled: true, maxSize: 2056 },
   borobudur: { enabled: false, maxSize: 2056 },
   gerbang: { enabled: false, maxSize: 2056 },
-  candiparit: { enabled: false, maxSize: 2056 }
+  candicangkuang: { enabled: false, maxSize: 2056 }
 };
 
 function setTempleDownscale(id, enabled, maxSize) {
@@ -675,18 +675,34 @@ function rebuildLighting() {
   // Place sun far from the scene so it appears distant (less parallax)
   sunLight.position.set(1000, 800, 1000);
   sunLight.castShadow = true;
-  sunLight.shadow.mapSize.width = 2048;
-  sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.camera.near = 10;
-  sunLight.shadow.camera.far = 1500;
-  sunLight.shadow.camera.left = -180;
-  sunLight.shadow.camera.right = 180;
-  sunLight.shadow.camera.top = 180;
-  sunLight.shadow.camera.bottom = -180;
-  sunLight.shadow.bias = -0.0005;
-  sunLight.shadow.normalBias = 0.02;
+  sunLight.shadow.mapSize.width = 4096;
+  sunLight.shadow.mapSize.height = 4096;
+  sunLight.shadow.camera.near = 1;
+  sunLight.shadow.camera.far = 3000;
+  sunLight.shadow.camera.left = -500;
+  sunLight.shadow.camera.right = 500;
+  sunLight.shadow.camera.top = 500;
+  sunLight.shadow.camera.bottom = -500;
+  sunLight.shadow.bias = -0.001;
+  sunLight.shadow.normalBias = 0.1;
   scene.add(sunLight);
   scene.add(sunLight.target);
+  
+  // Debug: Log shadow settings
+  console.log('Shadow Map Enabled:', renderer.shadowMap.enabled);
+  console.log('Sun Shadow Camera:', {
+    near: sunLight.shadow.camera.near,
+    far: sunLight.shadow.camera.far,
+    left: sunLight.shadow.camera.left,
+    right: sunLight.shadow.camera.right,
+    top: sunLight.shadow.camera.top,
+    bottom: sunLight.shadow.camera.bottom,
+    mapSize: sunLight.shadow.mapSize
+  });
+  
+  // Optional: Add shadow camera helper for debugging (uncomment to visualize shadow frustum)
+  // const shadowHelper = new THREE.CameraHelper(sunLight.shadow.camera);
+  // scene.add(shadowHelper);
 
   // Visible sun mesh (simple emissive sphere) - represents the sun in the sky
   try {
@@ -725,16 +741,16 @@ function rebuildLighting() {
   // Place moon far opposite the sun
   moonLight.position.set(-1000, 800, -1000);
   moonLight.castShadow = true;
-  moonLight.shadow.mapSize.width = 1024;
-  moonLight.shadow.mapSize.height = 1024;
-  moonLight.shadow.camera.near = 10;
-  moonLight.shadow.camera.far = 1500;
-  moonLight.shadow.camera.left = -180;
-  moonLight.shadow.camera.right = 180;
-  moonLight.shadow.camera.top = 180;
-  moonLight.shadow.camera.bottom = -180;
-  moonLight.shadow.bias = -0.0005;
-  moonLight.shadow.normalBias = 0.02;
+  moonLight.shadow.mapSize.width = 2048;
+  moonLight.shadow.mapSize.height = 2048;
+  moonLight.shadow.camera.near = 1;
+  moonLight.shadow.camera.far = 3000;
+  moonLight.shadow.camera.left = -500;
+  moonLight.shadow.camera.right = 500;
+  moonLight.shadow.camera.top = 500;
+  moonLight.shadow.camera.bottom = -500;
+  moonLight.shadow.bias = -0.001;
+  moonLight.shadow.normalBias = 0.1;
   scene.add(moonLight);
   scene.add(moonLight.target);
 
@@ -891,12 +907,12 @@ function createWorld() {
   // Create all landmarks
   // Layout: Karakter di tengah (0, 0)
   // Utara (Z positif): Gerbang Trowulan
-  // Timur (X positif): Candi Cetho  
-  // Barat (X negatif): Candi Parit
+  // Timur (X positif): Candi Sambisari  
+  // Barat (X negatif): Candi Cangkuang
   // Selatan (Z negatif): Prambanan & Borobudur
   createGerbangTrowulan(0, 300);        // Utara, 100 meter
-  createCandiCetho(300, 0);             // Timur, 100 meter
-  loadCandiParit(-300, 0);              // Barat, 100 meter
+  createCandiSambisari(300, 0);         // Timur, 100 meter
+  loadCandiCangkuang(-300, 0);          // Barat, 100 meter
   createPrambananTemple(-200, -300);     // Selatan kiri, 100 meter
   createBorobudurTemple(200, -300);      // Selatan kanan, 100 meter
 
@@ -916,8 +932,8 @@ function createWorld() {
   // createPOIMarkers();
 }
 
-// ===== CANDI CETHO =====
-function createCandiCetho(offsetX, offsetZ, opts = {}) {
+// ===== CANDI SAMBISARI =====
+function createCandiSambisari(offsetX, offsetZ, opts = {}) {
   // Load 3D GLTF model instead of procedural geometry
   const loader = new GLTFLoader();
   
@@ -935,7 +951,7 @@ function createCandiCetho(offsetX, offsetZ, opts = {}) {
       // Get terrain height at this position
       const terrainY = getTerrainHeight(offsetX, offsetZ);
       
-      // ★ POSISI KETINGGIAN CANDI CETHO - Ubah angka untuk menyesuaikan ketinggian
+      // ★ POSISI KETINGGIAN CANDI SAMBISARI - Ubah angka untuk menyesuaikan ketinggian
       // Angka negatif = lebih ke bawah, angka positif = lebih ke atas
       const heightOffset = 0; // Sesuaikan nilai ini jika masih melayang
       
@@ -972,18 +988,18 @@ function createCandiCetho(offsetX, offsetZ, opts = {}) {
         scene.add(lowModel);
         // Register LOD (threshold ~500 units)
         registerModelLOD(model, lowModel, model.position, 500);
-      } catch (e) { console.warn('Failed to create low-quality clone for Candi Cetho', e); }
+      } catch (e) { console.warn('Failed to create low-quality clone for Candi Sambisari', e); }
 
       // Add high-quality model to scene
       scene.add(model);
       
-      console.log('Candi Cetho 3D model loaded successfully');
+      console.log('Candi Sambisari 3D model loaded successfully');
     },
     function (xhr) {
-      console.log('Candi Cetho: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+      console.log('Candi Sambisari: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
     },
     function (error) {
-      console.error('Error loading Candi Cetho model:', error);
+      console.error('Error loading Candi Sambisari model:', error);
     }
   );
   
@@ -1073,6 +1089,7 @@ function createPrambananSpire(height) {
   const base = new THREE.Mesh(baseGeom, redStoneMaterial);
   base.position.y = height * 0.075;
   base.castShadow = true;
+  base.receiveShadow = true;
   group.add(base);
 
   // Body with relief panels
@@ -1080,6 +1097,7 @@ function createPrambananSpire(height) {
   const body = new THREE.Mesh(bodyGeom, redStoneMaterial);
   body.position.y = height * 0.35;
   body.castShadow = true;
+  body.receiveShadow = true;
   group.add(body);
 
   // Roof tiers
@@ -1092,6 +1110,7 @@ function createPrambananSpire(height) {
     tier.position.y = height * 0.55 + i * tierHeight * 0.8;
     tier.rotation.y = Math.PI / 4;
     tier.castShadow = true;
+    tier.receiveShadow = true;
     group.add(tier);
   }
 
@@ -1100,6 +1119,7 @@ function createPrambananSpire(height) {
   const finial = new THREE.Mesh(finialGeom, redStoneMaterial);
   finial.position.y = height * 0.95;
   finial.castShadow = true;
+  finial.receiveShadow = true;
   group.add(finial);
 
   return group;
@@ -1191,6 +1211,7 @@ function createGatePart(height, width, depth) {
     tier.position.y = -height / 2 + tierHeight / 2 + i * tierHeight;
     tier.position.x = -tierWidth / 4;
     tier.castShadow = true;
+    tier.receiveShadow = true;
     group.add(tier);
   }
 
@@ -1201,6 +1222,7 @@ function createGatePart(height, width, depth) {
   top.position.x = -width / 4;
   top.rotation.y = Math.PI / 4;
   top.castShadow = true;
+  top.receiveShadow = true;
   group.add(top);
 
   return group;
@@ -1214,6 +1236,7 @@ function createMeru(height) {
   const base = new THREE.Mesh(baseGeom, stoneMaterial);
   base.position.y = 1;
   base.castShadow = true;
+  base.receiveShadow = true;
   group.add(base);
 
   // Tiered roofs (ijuk style)
@@ -1226,6 +1249,7 @@ function createMeru(height) {
     roof.position.y = 3 + i * 1.2;
     roof.rotation.y = Math.PI / 4;
     roof.castShadow = true;
+    roof.receiveShadow = true;
     group.add(roof);
   }
 
@@ -1239,6 +1263,8 @@ function createGuardianStatue() {
   const baseGeom = new THREE.BoxGeometry(2, 1, 2);
   const base = new THREE.Mesh(baseGeom, stoneMaterial);
   base.position.y = 0.5;
+  base.castShadow = true;
+  base.receiveShadow = true;
   group.add(base);
 
   // Body
@@ -1246,6 +1272,7 @@ function createGuardianStatue() {
   const body = new THREE.Mesh(bodyGeom, stoneMaterial);
   body.position.y = 2.5;
   body.castShadow = true;
+  body.receiveShadow = true;
   group.add(body);
 
   // Head
@@ -1253,6 +1280,7 @@ function createGuardianStatue() {
   const head = new THREE.Mesh(headGeom, stoneMaterial);
   head.position.y = 4.5;
   head.castShadow = true;
+  head.receiveShadow = true;
   group.add(head);
 
   return group;
@@ -1332,8 +1360,8 @@ function createBorobudurTemple(offsetX, offsetZ, opts = {}) {
   addCollisionBox(offsetX, offsetZ, 120, 120, 100); // Height = 100 units
 }
 
-// ===== CANDI PARIT (3D GLTF MODEL) =====
-function loadCandiParit(offsetX, offsetZ, opts = {}) {
+// ===== CANDI CANGKUANG (3D GLTF MODEL) =====
+function loadCandiCangkuang(offsetX, offsetZ, opts = {}) {
   const loader = new GLTFLoader();
   
   loader.load(
@@ -1341,7 +1369,7 @@ function loadCandiParit(offsetX, offsetZ, opts = {}) {
     function (gltf) {
       const model = gltf.scene;
       try {
-        const base = getTempleDownscaleConfig('candiparit');
+        const base = getTempleDownscaleConfig('candicangkuang');
         const cfg = Object.assign({}, base, (opts.downscale !== undefined ? { enabled: !!opts.downscale } : {}), (typeof opts.maxSize === 'number' ? { maxSize: opts.maxSize } : {}));
         if (cfg.enabled) reduceModelResolution(gltf, { maxSize: cfg.maxSize || 1024 });
       } catch (e) { console.warn('reduceModelResolution failed', e); }
@@ -1385,7 +1413,7 @@ function loadCandiParit(offsetX, offsetZ, opts = {}) {
         lowModel.visible = false;
         scene.add(lowModel);
         registerModelLOD(model, lowModel, model.position, 500);
-      } catch (e) { console.warn('Failed to create low-quality clone for Candi Parit', e); }
+      } catch (e) { console.warn('Failed to create low-quality clone for Candi Cangkuang', e); }
 
       // Add to scene
       scene.add(model);
@@ -1393,13 +1421,13 @@ function loadCandiParit(offsetX, offsetZ, opts = {}) {
       // Add collision box around the model
       addCollisionBox(offsetX, offsetZ, 40, 40);
       
-      console.log('Candi Parit loaded successfully');
+      console.log('Candi Cangkuang loaded successfully');
     },
     function (xhr) {
       console.log((xhr.loaded / xhr.total * 100) + '% loaded');
     },
     function (error) {
-      console.error('Error loading Candi Parit:', error);
+      console.error('Error loading Candi Cangkuang:', error);
     }
   );
 }
@@ -1422,6 +1450,8 @@ function createBoat() {
   const hull = new THREE.Mesh(hullGeom, boatMat);
   hull.rotation.x = -Math.PI / 2;
   hull.position.y = 0.2;
+  hull.castShadow = true;
+  hull.receiveShadow = true;
   group.add(hull);
 
   return group;
@@ -1435,6 +1465,7 @@ function createStupa(scale = 1) {
   const base = new THREE.Mesh(baseGeom, stoneMaterial);
   base.position.y = 0.15 * scale;
   base.castShadow = true;
+  base.receiveShadow = true;
   group.add(base);
 
   // Body (bell shape)
@@ -1442,6 +1473,7 @@ function createStupa(scale = 1) {
   const body = new THREE.Mesh(bodyGeom, stoneMaterial);
   body.position.y = 0.3 * scale;
   body.castShadow = true;
+  body.receiveShadow = true;
   group.add(body);
 
   // Top spire
@@ -1449,6 +1481,7 @@ function createStupa(scale = 1) {
   const spire = new THREE.Mesh(spireGeom, stoneMaterial);
   spire.position.y = 1 * scale;
   spire.castShadow = true;
+  spire.receiveShadow = true;
   group.add(spire);
 
   return group;
@@ -1462,6 +1495,7 @@ function createPerforatedStupa(scale = 1) {
   const base = new THREE.Mesh(baseGeom, stoneMaterial);
   base.position.y = 0.15 * scale;
   base.castShadow = true;
+  base.receiveShadow = true;
   group.add(base);
 
   // Perforated bell (use wireframe for now, can be improved with lattice geometry)
@@ -1470,6 +1504,7 @@ function createPerforatedStupa(scale = 1) {
   const bell = new THREE.Mesh(bellGeom, bellMat);
   bell.position.y = 0.5 * scale;
   bell.castShadow = true;
+  bell.receiveShadow = true;
   group.add(bell);
 
   // Diamond-shaped holes (represented by darker insets)
@@ -1494,6 +1529,7 @@ function createPerforatedStupa(scale = 1) {
   const top = new THREE.Mesh(topGeom, stoneMaterial);
   top.position.y = 1.8 * scale;
   top.castShadow = true;
+  top.receiveShadow = true;
   group.add(top);
 
   return group;
@@ -1507,6 +1543,7 @@ function createMainStupa() {
   const base = new THREE.Mesh(baseGeom, stoneMaterial);
   base.position.y = 1;
   base.castShadow = true;
+  base.receiveShadow = true;
   group.add(base);
 
   // Bell
@@ -1514,6 +1551,7 @@ function createMainStupa() {
   const bell = new THREE.Mesh(bellGeom, stoneMaterial);
   bell.position.y = 2;
   bell.castShadow = true;
+  bell.receiveShadow = true;
   group.add(bell);
 
   // Spire rings
@@ -1523,6 +1561,7 @@ function createMainStupa() {
     ring.position.y = 5.5 + i * 0.5;
     ring.rotation.x = Math.PI / 2;
     ring.castShadow = true;
+    ring.receiveShadow = true;
     group.add(ring);
   }
 
@@ -1531,6 +1570,7 @@ function createMainStupa() {
   const finial = new THREE.Mesh(finialGeom, stoneMaterial);
   finial.position.y = 10.5;
   finial.castShadow = true;
+  finial.receiveShadow = true;
   group.add(finial);
 
   return group;
@@ -1549,8 +1589,8 @@ function createAllPaths() {
   const pathConnections = [
     // From center spawn to each landmark
     { start: centerSpawn, end: { x: 0, z: 300 } },        // To Gerbang Trowulan (North)
-    { start: centerSpawn, end: { x: 300, z: 0 } },        // To Candi Cetho (East)
-    { start: centerSpawn, end: { x: -300, z: 0 } },       // To Candi Parit (West)
+    { start: centerSpawn, end: { x: 300, z: 0 } },        // To Candi Sambisari (East)
+    { start: centerSpawn, end: { x: -300, z: 0 } },       // To Candi Cangkuang (West)
     { start: centerSpawn, end: { x: -200, z: -300 } },    // To Prambanan (Southwest)
     { start: centerSpawn, end: { x: 200, z: -300 } },     // To Borobudur (Southeast)
   ];
@@ -1645,8 +1685,8 @@ function createTrees() {
   // Updated landmark positions based on actual building locations
   const exclusionZones = [
     { x: 0, z: 300, radius: 70 },       // Gerbang Trowulan (North)
-    { x: 300, z: 0, radius: 70 },       // Candi Cetho (East)
-    { x: -300, z: 0, radius: 70 },      // Candi Parit (West)
+    { x: 300, z: 0, radius: 70 },       // Candi Sambisari (East)
+    { x: -300, z: 0, radius: 70 },      // Candi Cangkuang (West)
     { x: -200, z: -300, radius: 90 },   // Prambanan (Southwest)
     { x: 200, z: -300, radius: 90 },    // Borobudur (Southeast)
   ];
@@ -1720,6 +1760,7 @@ function createTree(rng) {
   const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5c4033, roughness: 1 });
   const trunk = new THREE.Mesh(trunkGeom, trunkMat);
   trunk.castShadow = true;
+  trunk.receiveShadow = true;
   group.add(trunk);
 
   // Foliage - Tropical style (palm-ish or banyan-ish)
@@ -1731,6 +1772,7 @@ function createTree(rng) {
   canopy.position.set(0, 4.5, 0);
   canopy.scale.y = 0.8;
   canopy.castShadow = true;
+  canopy.receiveShadow = true;
   group.add(canopy);
 
   // Smaller clumps (deterministic)
@@ -1743,6 +1785,7 @@ function createTree(rng) {
       (rng() - 0.5) * 3
     );
     clump.castShadow = true;
+    clump.receiveShadow = true;
     group.add(clump);
   }
 
@@ -1788,9 +1831,9 @@ function createLamps() {
   const pathPoints = [
     // To Gerbang Trowulan (North)
     { start: { x: 0, z: 0 }, end: { x: 0, z: 300 }, count: 2 },
-    // To Candi Cetho (East)
+    // To Candi Sambisari (East)
     { start: { x: 0, z: 0 }, end: { x: 300, z: 0 }, count: 2 },
-    // To Candi Parit (West)
+    // To Candi Cangkuang (West)
     { start: { x: 0, z: 0 }, end: { x: -300, z: 0 }, count: 2 },
     // To Prambanan (Southwest)
     { start: { x: 0, z: 0 }, end: { x: -200, z: -300 }, count: 2 },
@@ -1833,12 +1876,15 @@ function createLamp(x, z, h) {
   const post = new THREE.Mesh(postGeom, postMat);
   post.position.y = 1.5;
   post.castShadow = true;
+  post.receiveShadow = true;
   group.add(post);
 
   // Lantern holder
   const holderGeom = new THREE.BoxGeometry(0.6, 0.1, 0.6);
   const holder = new THREE.Mesh(holderGeom, postMat);
   holder.position.y = 2.8;
+  holder.castShadow = true;
+  holder.receiveShadow = true;
   group.add(holder);
 
   // Lantern glass/paper
@@ -1852,6 +1898,8 @@ function createLamp(x, z, h) {
   });
   const lantern = new THREE.Mesh(lanternGeom, lanternMat);
   lantern.position.y = 2.5;
+  lantern.castShadow = true;
+  lantern.receiveShadow = true;
   group.add(lantern);
 
   // NOTE: Baked emissive lamp only (remove dynamic PointLight to reduce GPU cost)
@@ -1875,6 +1923,8 @@ function createPOIMarkers() {
     });
     const pillar = new THREE.Mesh(pillarGeom, pillarMat);
     pillar.position.y = 1;
+    pillar.castShadow = true;
+    pillar.receiveShadow = true;
     markerGroup.add(pillar);
 
     // Floating orb
@@ -1889,6 +1939,7 @@ function createPOIMarkers() {
     const orb = new THREE.Mesh(orbGeom, orbMat);
     orb.position.y = 2.5;
     orb.userData.isOrb = true;
+    orb.castShadow = true;
     markerGroup.add(orb);
 
     // Point light
@@ -2628,6 +2679,16 @@ let cameraController = null;
 // Create world
 createWorld();
 
+// Debug: Count objects with shadows
+let castShadowCount = 0;
+let receiveShadowCount = 0;
+scene.traverse((obj) => {
+  if (obj.castShadow) castShadowCount++;
+  if (obj.receiveShadow) receiveShadowCount++;
+});
+console.log(`Objects casting shadows: ${castShadowCount}`);
+console.log(`Objects receiving shadows: ${receiveShadowCount}`);
+
 // Debug: visualize collision boxes (set to true to see them)
 const DEBUG_COLLISION = false;
 if (DEBUG_COLLISION) {
@@ -2751,20 +2812,28 @@ function animate() {
   try {
     // If a player exists, center the sun shadow frustum around the player X/Z
     if (typeof player !== 'undefined' && player && player.position) {
-      const radius = 180; // half-size of orthographic shadow projection
-      sunLight.shadow.camera.left = -radius;
-      sunLight.shadow.camera.right = radius;
-      sunLight.shadow.camera.top = radius;
-      sunLight.shadow.camera.bottom = -radius;
-      sunLight.shadow.camera.far = 1200;
+      const radius = 350; // Increased from 180 for wider shadow coverage
+      
+      // Center shadow frustum on player position for better shadow quality
+      const px = player.position.x;
+      const pz = player.position.z;
+      
+      sunLight.shadow.camera.left = px - radius;
+      sunLight.shadow.camera.right = px + radius;
+      sunLight.shadow.camera.top = pz + radius;
+      sunLight.shadow.camera.bottom = pz - radius;
       sunLight.shadow.camera.updateProjectionMatrix();
 
-      moonLight.shadow.camera.left = -radius;
-      moonLight.shadow.camera.right = radius;
-      moonLight.shadow.camera.top = radius;
-      moonLight.shadow.camera.bottom = -radius;
-      moonLight.shadow.camera.far = 1200;
+      moonLight.shadow.camera.left = px - radius;
+      moonLight.shadow.camera.right = px + radius;
+      moonLight.shadow.camera.top = pz + radius;
+      moonLight.shadow.camera.bottom = pz - radius;
       moonLight.shadow.camera.updateProjectionMatrix();
+      
+      // Update shadow camera helper if exists (for debugging)
+      if (globalThis.sunShadowHelper) {
+        globalThis.sunShadowHelper.update();
+      }
     }
   } catch (e) {
     // non-fatal

@@ -158,12 +158,12 @@ const camera = new THREE.OrthographicCamera(
 camera.position.z = 10;
 
 // Lighting Setup (Pengganti Basic Light)
-// 1. Ambient Light (Cahaya dasar, default 0 biar gelap dulu)
-const ambientLight = new THREE.AmbientLight(0xffffff, 0); 
+// 1. Ambient Light (Cahaya dasar, ditingkatkan agar tidak terlalu gelap)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); 
 scene.add(ambientLight);
 
 // 2. Directional Light (Matahari/Bulan pembentuk bayangan)
-const dirLight = new THREE.DirectionalLight(0xffffff, 0);
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
 dirLight.position.set(5, 8, 5); // Posisi cahaya dari atas kanan depan
 dirLight.castShadow = true;
 
@@ -273,8 +273,9 @@ const sfx = {
 let selectedMap = './map/latar.png';
 
 // Gunakan StandardMaterial agar bisa bereaksi thd cahaya dan menerima bayangan
+// Ukuran disesuaikan dengan aspect ratio camera agar full screen tanpa space
 const backgroundMesh = new THREE.Mesh(
-  new THREE.PlaneGeometry(24 * aspect, 24), // Lebar diperbesar agar cover area
+  new THREE.PlaneGeometry(viewHeight * aspect, viewHeight), // Menyesuaikan aspect ratio viewport
   new THREE.MeshStandardMaterial({ 
     color: 0xffffff, 
     roughness: 1, 
@@ -312,15 +313,15 @@ function loadBackground(path) {
 }
 loadBackground(selectedMap);
 
-// Lantai penerima bayangan
-const floorMesh = new THREE.Mesh(
-  new THREE.PlaneGeometry(30, 5),
-  new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 1 })
-);
-floorMesh.position.y = -3.8;
-floorMesh.position.z = -1;
-floorMesh.receiveShadow = true; // Lantai menerima bayangan
-scene.add(floorMesh);
+// Lantai coklat dihilangkan untuk tampilan lebih bersih
+// const floorMesh = new THREE.Mesh(
+//   new THREE.PlaneGeometry(30, 5),
+//   new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 1 })
+// );
+// floorMesh.position.y = -3.8;
+// floorMesh.position.z = -1;
+// floorMesh.receiveShadow = true;
+// scene.add(floorMesh);
 
 // ==========================================
 // 3. MAP CONFIGURATION & LOGIC
