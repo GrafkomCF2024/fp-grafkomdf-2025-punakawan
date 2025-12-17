@@ -67,14 +67,14 @@ const landmarks = {
     name: 'Gerbang Trowulan',
     color: 0x708090
   },
-  candiCetho: {
+  candiSambisari: {
     position: { x: 300, y: 0, z: 0 },
-    name: 'Candi Cetho',
+    name: 'Candi Sambisari',
     color: 0x8B8B7A
   },
-  candiParit: {
+  candiCangkuang: {
     position: { x: -300, y: 0, z: 0 },
-    name: 'Candi Parit',
+    name: 'Candi Cangkuang',
     color: 0xA0826D
   },
   prambanan: {
@@ -268,16 +268,16 @@ Konon Danau Batur dan Danau Bratan (di Bedugul) dulunya satu. Ketika Dewa Wisnu 
     description: `Candi Parit atau Candi Apit adalah salah satu candi yang merupakan bagian dari kompleks percandian di Jawa Tengah.
 
 SEJARAH:
-Candi ini dibangun pada masa kejayaan kerajaan Hindu-Buddha di Jawa. Nama "Parit" atau "Apit" mengacu pada posisinya yang mengapit atau berada di samping struktur utama kompleks candi.
+Candi ini dibangun pada abad ke-8 Masehi dan terletak di Kampung Pulo, Garut. Candi Cangkuang merupakan peninggalan Kerajaan Galuh yang bercorak Hindu Shivaisme.
 
 ARSITEKTUR:
-Candi Parit menampilkan arsitektur khas periode klasik Jawa dengan:
+Candi Cangkuang menampilkan arsitektur khas periode klasik Sunda dengan:
 • Struktur batu andesit yang kokoh
 • Ornamen relief yang mendetail
 • Proporsi harmonis khas percandian Jawa
 
 FUNGSI:
-Sebagai candi perwara (candi pendamping), Candi Parit berfungsi sebagai pelengkap candi utama dalam kompleks percandian. Candi-candi perwara biasanya digunakan untuk menyimpan arca atau sebagai tempat pemujaan tambahan.
+Candi Cangkuang memiliki keunikan karena terletak di sebuah pulau kecil di tengah danau. Candi ini berfungsi sebagai tempat pemujaan Dewa Siwa. Di dalamnya ditemukan arca Siwa dan arca Ganesha sebagai bukti pengaruh Hindu di Tatar Sunda.
 
 PELESTARIAN:
 Candi ini telah mengalami beberapa kali pemugaran untuk menjaga kelestariannya sebagai warisan budaya Indonesia.`
@@ -382,11 +382,11 @@ function reduceModelResolution(gltf, opts = {}) {
 
 // Per-model downscale configuration. Set `enabled` to false to skip downscaling for a model.
 const MODEL_DOWNSCALE_CONFIG = {
-  candicetho: { enabled: true, maxSize: 2056 },
+  candisambisari: { enabled: true, maxSize: 2056 },
   prambanan: { enabled: true, maxSize: 2056 },
   borobudur: { enabled: false, maxSize: 2056 },
   gerbang: { enabled: false, maxSize: 2056 },
-  candiparit: { enabled: false, maxSize: 2056 }
+  candicangkuang: { enabled: false, maxSize: 2056 }
 };
 
 function setTempleDownscale(id, enabled, maxSize) {
@@ -886,12 +886,12 @@ function createWorld() {
   // Create all landmarks
   // Layout: Karakter di tengah (0, 0)
   // Utara (Z positif): Gerbang Trowulan
-  // Timur (X positif): Candi Cetho  
-  // Barat (X negatif): Candi Parit
+  // Timur (X positif): Candi Sambisari  
+  // Barat (X negatif): Candi Cangkuang
   // Selatan (Z negatif): Prambanan & Borobudur
   createGerbangTrowulan(0, 300);        // Utara, 100 meter
-  createCandiCetho(300, 0);             // Timur, 100 meter
-  loadCandiParit(-300, 0);              // Barat, 100 meter
+  createCandiSambisari(300, 0);         // Timur, 100 meter
+  loadCandiCangkuang(-300, 0);          // Barat, 100 meter
   createPrambananTemple(-200, -300);     // Selatan kiri, 100 meter
   createBorobudurTemple(200, -300);      // Selatan kanan, 100 meter
 
@@ -911,8 +911,8 @@ function createWorld() {
   // createPOIMarkers();
 }
 
-// ===== CANDI CETHO =====
-function createCandiCetho(offsetX, offsetZ, opts = {}) {
+// ===== CANDI SAMBISARI =====
+function createCandiSambisari(offsetX, offsetZ, opts = {}) {
   // Load 3D GLTF model instead of procedural geometry
   const loader = new GLTFLoader();
   
@@ -930,7 +930,7 @@ function createCandiCetho(offsetX, offsetZ, opts = {}) {
       // Get terrain height at this position
       const terrainY = getTerrainHeight(offsetX, offsetZ);
       
-      // ★ POSISI KETINGGIAN CANDI CETHO - Ubah angka untuk menyesuaikan ketinggian
+      // ★ POSISI KETINGGIAN CANDI SAMBISARI - Ubah angka untuk menyesuaikan ketinggian
       // Angka negatif = lebih ke bawah, angka positif = lebih ke atas
       const heightOffset = 0; // Sesuaikan nilai ini jika masih melayang
       
@@ -967,18 +967,18 @@ function createCandiCetho(offsetX, offsetZ, opts = {}) {
         scene.add(lowModel);
         // Register LOD (threshold ~500 units)
         registerModelLOD(model, lowModel, model.position, 500);
-      } catch (e) { console.warn('Failed to create low-quality clone for Candi Cetho', e); }
+      } catch (e) { console.warn('Failed to create low-quality clone for Candi Sambisari', e); }
 
       // Add high-quality model to scene
       scene.add(model);
       
-      console.log('Candi Cetho 3D model loaded successfully');
+      console.log('Candi Sambisari 3D model loaded successfully');
     },
     function (xhr) {
-      console.log('Candi Cetho: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
+      console.log('Candi Sambisari: ' + (xhr.loaded / xhr.total * 100) + '% loaded');
     },
     function (error) {
-      console.error('Error loading Candi Cetho model:', error);
+      console.error('Error loading Candi Sambisari model:', error);
     }
   );
   
@@ -1339,8 +1339,8 @@ function createBorobudurTemple(offsetX, offsetZ, opts = {}) {
   addCollisionBox(offsetX, offsetZ, 120, 120, 100); // Height = 100 units
 }
 
-// ===== CANDI PARIT (3D GLTF MODEL) =====
-function loadCandiParit(offsetX, offsetZ, opts = {}) {
+// ===== CANDI CANGKUANG (3D GLTF MODEL) =====
+function loadCandiCangkuang(offsetX, offsetZ, opts = {}) {
   const loader = new GLTFLoader();
   
   loader.load(
@@ -1348,7 +1348,7 @@ function loadCandiParit(offsetX, offsetZ, opts = {}) {
     function (gltf) {
       const model = gltf.scene;
       try {
-        const base = getTempleDownscaleConfig('candiparit');
+        const base = getTempleDownscaleConfig('candicangkuang');
         const cfg = Object.assign({}, base, (opts.downscale !== undefined ? { enabled: !!opts.downscale } : {}), (typeof opts.maxSize === 'number' ? { maxSize: opts.maxSize } : {}));
         if (cfg.enabled) reduceModelResolution(gltf, { maxSize: cfg.maxSize || 1024 });
       } catch (e) { console.warn('reduceModelResolution failed', e); }
@@ -1392,7 +1392,7 @@ function loadCandiParit(offsetX, offsetZ, opts = {}) {
         lowModel.visible = false;
         scene.add(lowModel);
         registerModelLOD(model, lowModel, model.position, 500);
-      } catch (e) { console.warn('Failed to create low-quality clone for Candi Parit', e); }
+      } catch (e) { console.warn('Failed to create low-quality clone for Candi Cangkuang', e); }
 
       // Add to scene
       scene.add(model);
@@ -1400,13 +1400,13 @@ function loadCandiParit(offsetX, offsetZ, opts = {}) {
       // Add collision box around the model
       addCollisionBox(offsetX, offsetZ, 40, 40);
       
-      console.log('Candi Parit loaded successfully');
+      console.log('Candi Cangkuang loaded successfully');
     },
     function (xhr) {
       console.log((xhr.loaded / xhr.total * 100) + '% loaded');
     },
     function (error) {
-      console.error('Error loading Candi Parit:', error);
+      console.error('Error loading Candi Cangkuang:', error);
     }
   );
 }
@@ -1568,8 +1568,8 @@ function createAllPaths() {
   const pathConnections = [
     // From center spawn to each landmark
     { start: centerSpawn, end: { x: 0, z: 300 } },        // To Gerbang Trowulan (North)
-    { start: centerSpawn, end: { x: 300, z: 0 } },        // To Candi Cetho (East)
-    { start: centerSpawn, end: { x: -300, z: 0 } },       // To Candi Parit (West)
+    { start: centerSpawn, end: { x: 300, z: 0 } },        // To Candi Sambisari (East)
+    { start: centerSpawn, end: { x: -300, z: 0 } },       // To Candi Cangkuang (West)
     { start: centerSpawn, end: { x: -200, z: -300 } },    // To Prambanan (Southwest)
     { start: centerSpawn, end: { x: 200, z: -300 } },     // To Borobudur (Southeast)
   ];
@@ -1664,8 +1664,8 @@ function createTrees() {
   // Updated landmark positions based on actual building locations
   const exclusionZones = [
     { x: 0, z: 300, radius: 70 },       // Gerbang Trowulan (North)
-    { x: 300, z: 0, radius: 70 },       // Candi Cetho (East)
-    { x: -300, z: 0, radius: 70 },      // Candi Parit (West)
+    { x: 300, z: 0, radius: 70 },       // Candi Sambisari (East)
+    { x: -300, z: 0, radius: 70 },      // Candi Cangkuang (West)
     { x: -200, z: -300, radius: 90 },   // Prambanan (Southwest)
     { x: 200, z: -300, radius: 90 },    // Borobudur (Southeast)
   ];
@@ -1810,9 +1810,9 @@ function createLamps() {
   const pathPoints = [
     // To Gerbang Trowulan (North)
     { start: { x: 0, z: 0 }, end: { x: 0, z: 300 }, count: 2 },
-    // To Candi Cetho (East)
+    // To Candi Sambisari (East)
     { start: { x: 0, z: 0 }, end: { x: 300, z: 0 }, count: 2 },
-    // To Candi Parit (West)
+    // To Candi Cangkuang (West)
     { start: { x: 0, z: 0 }, end: { x: -300, z: 0 }, count: 2 },
     // To Prambanan (Southwest)
     { start: { x: 0, z: 0 }, end: { x: -200, z: -300 }, count: 2 },
