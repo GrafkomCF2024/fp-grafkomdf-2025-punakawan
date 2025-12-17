@@ -23,6 +23,27 @@ const gameState = {
   timeCycleDuration: 300 // 5 minutes in seconds for full 24h cycle
 };
 
+// ===== AUDIO: Idle background music for open world =====
+const idleAudio = new Audio('./music/idle.mp3');
+idleAudio.loop = true;
+idleAudio.preload = 'auto';
+idleAudio.volume = 0.45;
+let idleAudioAllowed = true; 
+function playIdleAudio() {
+  if (!idleAudioAllowed) return;
+  try {
+    if (gameState.status === 'playing') idleAudio.play().catch(() => {});
+  } catch (e) {}
+}
+
+function pauseIdleAudio() {
+  try {
+    idleAudio.pause();
+    } 
+    catch (e) {}
+}
+
+
 // ===== COLLISION BOXES & OBJECTS =====
 const collisionBoxes = [];
 const lamps = []; // Store lamp lights to toggle them
@@ -2376,6 +2397,8 @@ function startGame() {
   loadingScreen.style.display = 'none';
   gameHud.style.display = 'block';
   gameState.status = 'playing';
+  // Start ambient idle music for open world
+  playIdleAudio();
   
   // Request pointer lock for first-person controls
   setTimeout(() => {
@@ -2388,10 +2411,14 @@ function togglePause() {
     gameState.status = 'paused';
     pauseMenu.style.display = 'flex';
     document.exitPointerLock();
+    // Pause idle music while game is paused
+    pauseIdleAudio();
   } else if (gameState.status === 'paused') {
     gameState.status = 'playing';
     pauseMenu.style.display = 'none';
     canvas.requestPointerLock();
+    // Resume idle music when unpausing
+    playIdleAudio();
   }
 }
 
@@ -2443,6 +2470,8 @@ function enterFightingGame(landmark) {
   }));
   
   // Navigate to fighting game (dalam folder yang sama dengan index.html)
+  // Pause open-world music before leaving to fighting mode
+  pauseIdleAudio();
   window.location.href = './fighting.html';
 }
 
@@ -2467,11 +2496,15 @@ function showInfoPanel(poi) {
   infoPanel.style.display = 'block';
   gameState.status = 'paused';
   document.exitPointerLock();
+  // Pause ambient music while reading POI info
+  pauseIdleAudio();
 }
 
 function closeInfoPanelFn() {
   infoPanel.style.display = 'none';
   gameState.status = 'playing';
+  // Resume ambient music after closing info panel
+  playIdleAudio();
   canvas.requestPointerLock();
 }
 
